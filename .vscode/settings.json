@@ -1,0 +1,13 @@
+{
+  "css.customData": [],
+  "css.validate": true,
+  "scss.validate": true,
+  "less.validate": true,
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "css.lint.unknownAtRules": "ignore"
+}
