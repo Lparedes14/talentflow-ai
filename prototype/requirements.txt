@@ -1,0 +1,58 @@
+# Install everything with:  pip install -r requirements.txt
+# That one line is the only install command you need. The optional group at the bottom is
+# off until you uncomment it and run that same line again.
+
+# Ingestion
+pdfplumber>=0.11        # PDF text extraction
+python-docx>=1.1        # .docx (and .doc after LibreOffice conversion)
+striprtf>=0.0.26        # .rtf
+ftfy>=6.2               # repairs double-encoded UTF-8
+pandas>=2.0
+
+# Embeddings and retrieval
+scikit-learn>=1.4       # TF-IDF and truncated SVD
+scipy>=1.11
+numpy>=1.26
+
+# Skill vocabulary
+wordfreq>=3.0           # general-English word frequency; half of the alias safety test
+
+# LLM engine (optional to use, but small, so installed by default)
+anthropic>=0.40         # Anthropic is the only provider this environment's egress reaches
+python-dotenv>=1.0      # reads the API keys from .env
+certifi>=2024.2         # CA bundle. Required on python.org macOS builds, which ship
+                        # with none and fail every https call until it is installed.
+
+# Task 1 video, default transcriber. Light, no PyTorch. Needs ffmpeg on PATH (see below).
+faster-whisper>=1.0
+
+# Task 1 sentiment baseline. Rule-based, tiny, no model.
+vaderSentiment>=3.3
+
+# UI
+streamlit>=1.40
+
+# Tests
+pytest>=8.0
+
+# ---------------------------------------------------------------------------------------
+# System tools (not pip):
+#   LibreOffice, for legacy .doc and .odt resumes. macOS: brew install --cask libreoffice
+#   ffmpeg, for the task 1 video backends.          macOS: brew install ffmpeg
+# ---------------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------------------
+# Optional group. Uncomment what you want, then run:  pip install -r requirements.txt
+# ---------------------------------------------------------------------------------------
+
+# Pretrained sentence embeddings: the 'st' backend and the mapper's --map-backend st.
+# Pulls in PyTorch, about 2 GB. Model weights download from HuggingFace on first use.
+# sentence-transformers>=3.0
+
+# A heavier alternative transcriber: the reference Whisper package. Pulls in PyTorch (~2 GB).
+# faster-whisper above covers the same models without it, so most people never need this.
+# openai-whisper>=20231117
+
+# Converting a CMU-MOSEI .csd download into a text,label CSV (scripts/19_mosei_to_csv.py).
+# Only needed to prepare the sentiment benchmark, not to run the app.
+# h5py>=3.0

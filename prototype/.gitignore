@@ -1,0 +1,16 @@
+data/interim/
+data/processed/
+data/llm_cache/
+__pycache__/
+*.pyc
+.env
+.venv/
+data/runs/
+
+# Personal recordings and derived audio (large; keep out of git). package.sh already skips these.
+docs/demos/*.mp4
+docs/demos/*.mov
+docs/demos/*.m4a
+docs/demos/*.wav
+# macOS cruft
+.DS_Store

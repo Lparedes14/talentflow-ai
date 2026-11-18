@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsideTrack - Internal Mobility Platform</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React and ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Babel Standalone for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --font-size: 16px;
+      --background: #ffffff;
+      --foreground: oklch(0.145 0 0);
+    }
+    
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    
+    // Lucide Icons Components
+    const Icon = ({ name, className = "w-5 h-5", ...props }) => {
+      useEffect(() => {
+        lucide.createIcons();
+      }, []);
+      return React.createElement('i', { 
+        'data-lucide': name, 
+        className,
+        ...props 
+      });
+    };
+
+    // Profile Data
+    const profiles = [
+      {
+        id: 'christine-wu',
+        name: 'Christine Wu',
+        role: 'Help Desk Specialist',
+        department: 'IT Support',
+        yearsExperience: 3,
+        imageUrl: 'https://images.unsplash.com/photo-1758600587839-56ba05596c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200',
+        totalSkills: 18,
+        totalMatches: 8,
+        profileStrength: 72,
+        uploadType: 'video',
+        extractedKeywords: ['3+ Years Experience', 'Help Desk Support', 'Technical Troubleshooting'],
+        extractedSkills: [
+          { name: 'Technical Troubleshooting', category: 'Technical', verified: true },
+          { name: 'Customer Communication', category: 'Soft Skills', verified: true },
+          { name: 'Ticket Management', category: 'Process', verified: true },
+          { name: 'Problem Solving', category: 'Soft Skills', verified: true },
+          { name: 'Technical Documentation', category: 'Technical', verified: true },
+          { name: 'IT Support Tools', category: 'Technical', verified: true },
+        ],
+        interests: ['Customer Success Developer', 'Technical Customer Success'],
+        resumeFileName: 'Christine_Wu_Resume.pdf',
+        jobMatches: [
+          {
+            title: 'Technical Support Engineer',
+            team: 'Customer Success',
+            department: 'Customer Success',
+            location: 'Remote',
+            matchScore: 92,
+            hiringManager: 'David Kim',
+            transferType: 'Promotion',
+            requiredSkills: ['Technical Troubleshooting', 'Customer Communication', 'Ticket Management', 'Technical Documentation', 'IT Support Tools', 'Problem Solving', 'Basic Scripting', 'Escalation Management'],
+            skillGaps: ['Escalation Management'],
+            description: 'Provide technical support and troubleshoot customer issues.'
+          }
+        ],
+        learningPaths: [
+          {
+            title: 'Customer Success Management',
+            provider: 'LinkedIn Learning',
+            duration: '8 weeks',
+            level: 'Intermediate',
+            skills: ['Customer Success Strategy'],
+            enrollmentCount: 245,
+            rating: 4.8
+          }
+        ],
+        competencyAssessments: []
+      },
+      {
+        id: 'marcus-johnson',
+        name: 'Marcus Johnson',
+        role: 'Frontend Developer',
+        department: 'Engineering',
+        yearsExperience: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1570215170761-f056128eda48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200',
+        totalSkills: 22,
+        totalMatches: 6,
+        profileStrength: 85,
+        uploadType: 'video',
+        extractedKeywords: ['React', 'TypeScript', 'Frontend'],
+        extractedSkills: [
+          { name: 'React', category: 'Technical', verified: true },
+          { name: 'TypeScript', category: 'Technical', verified: true },
+          { name: 'CSS/Tailwind', category: 'Technical', verified: true },
+        ],
+        interests: ['Engineering Manager', 'Senior Frontend Engineer'],
+        resumeFileName: 'Marcus_Johnson_Resume.pdf',
+        jobMatches: [],
+        learningPaths: [],
+        competencyAssessments: []
+      },
+      {
+        id: 'sarah-chen',
+        name: 'Sarah Chen',
+        role: 'Product Manager',
+        department: 'Product',
+        yearsExperience: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1764795849885-e226e3cabe87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200',
+        totalSkills: 20,
+        totalMatches: 7,
+        profileStrength: 88,
+        uploadType: 'audio',
+        extractedKeywords: ['Product Strategy', 'Data-Driven'],
+        extractedSkills: [
+          { name: 'Product Strategy', category: 'Product', verified: true },
+          { name: 'User Research', category: 'Product', verified: true },
+        ],
+        interests: ['Senior Product Manager', 'Group Product Manager'],
+        resumeFileName: 'Sarah_Chen_Resume.pdf',
+        jobMatches: [],
+        learningPaths: [],
+        competencyAssessments: []
+      },
+      {
+        id: 'david-rodriguez',
+        name: 'David Rodriguez',
+        role: 'Data Analyst',
+        department: 'Data & Analytics',
+        yearsExperience: 3,
+        imageUrl: 'https://images.unsplash.com/photo-1752778935928-ee12da5e3fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200',
+        totalSkills: 16,
+        totalMatches: 9,
+        profileStrength: 78,
+        uploadType: 'video',
+        extractedKeywords: ['SQL', 'Python', 'Data Visualization'],
+        extractedSkills: [
+          { name: 'SQL', category: 'Technical', verified: true },
+          { name: 'Python', category: 'Technical', verified: true },
+        ],
+        interests: ['Data Scientist', 'Analytics Engineer'],
+        resumeFileName: 'David_Rodriguez_Resume.pdf',
+        jobMatches: [],
+        learningPaths: [],
+        competencyAssessments: []
+      },
+      {
+        id: 'priya-patel',
+        name: 'Priya Patel',
+        role: 'QA Engineer',
+        department: 'Engineering',
+        yearsExperience: 4,
+        imageUrl: 'https://images.unsplash.com/photo-1681164315430-6159b2361615?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200',
+        totalSkills: 19,
+        totalMatches: 5,
+        profileStrength: 81,
+        uploadType: 'video',
+        extractedKeywords: ['Test Automation', 'Quality Assurance'],
+        extractedSkills: [
+          { name: 'Test Automation', category: 'Technical', verified: true },
+          { name: 'Quality Assurance', category: 'Technical', verified: true },
+        ],
+        interests: ['SDET', 'QA Lead'],
+        resumeFileName: 'Priya_Patel_Resume.pdf',
+        jobMatches: [],
+        learningPaths: [],
+        competencyAssessments: []
+      }
+    ];
+
+    // HR Dashboard Component
+    function HRDashboard({ profiles, onSelectApplicant }) {
+      const [searchQuery, setSearchQuery] = useState('');
+      const [filterDepartment, setFilterDepartment] = useState('all');
+      const [sortBy, setSortBy] = useState('matches');
+
+      const departments = ['all', ...Array.from(new Set(profiles.map(p => p.department)))];
+
+      const filteredProfiles = profiles
+        .filter(profile => {
+          const skills = profile.skills || profile.extractedSkills.map(s => s.name);
+          
+          const matchesSearch = 
+            profile.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            profile.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
+          
+          const matchesDepartment = filterDepartment === 'all' || profile.department === filterDepartment;
+          
+          return matchesSearch && matchesDepartment;
+        })
+        .sort((a, b) => {
+          if (sortBy === 'name') return a.name.localeCompare(b.name);
+          if (sortBy === 'matches') return b.totalMatches - a.totalMatches;
+          if (sortBy === 'experience') return b.yearsExperience - a.yearsExperience;
+          return 0;
+        });
+
+      return (
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">All Applicants</h2>
+            <p className="text-gray-600">View employee profiles, skills, and career interests</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">{profiles.length}</div>
+                  <div className="text-sm text-gray-600">Total Employees</div>
+                </div>
+                <Icon name="trending-up" className="w-10 h-10 text-blue-600" />
+              </div>
+            </div>
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">{filteredProfiles.length}</div>
+                  <div className="text-sm text-gray-600">Filtered Results</div>
+                </div>
+                <Icon name="filter" className="w-10 h-10 text-purple-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="relative">
+                <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search employees or skills..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <select
+                value={filterDepartment}
+                onChange={(e) => setFilterDepartment(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Departments</option>
+                {departments.filter(d => d !== 'all').map(dept => (
+                  <option key={dept} value={dept}>{dept}</option>
+                ))}
+              </select>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="matches">Sort: Most Matches</option>
+                <option value="name">Sort: Name (A-Z)</option>
+                <option value="experience">Sort: Experience</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProfiles.map(profile => {
+              const skills = profile.skills || profile.extractedSkills.map(s => s.name);
+              return (
+                <div
+                  key={profile.id}
+                  className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => onSelectApplicant(profile.id)}
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <img
+                      src={profile.imageUrl}
+                      alt={profile.name}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-gray-900 mb-1 truncate">{profile.name}</h3>
+                      <div className="text-sm text-gray-600 mb-1">{profile.role}</div>
+                      <div className="text-xs text-gray-500">{profile.department}</div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div className="bg-blue-50 rounded-lg p-3">
+                      <div className="text-xs text-gray-600 mb-1">Job Matches</div>
+                      <div className="text-xl font-bold text-blue-600">{profile.totalMatches}</div>
+                    </div>
+                    <div className="bg-purple-50 rounded-lg p-3">
+                      <div className="text-xs text-gray-600 mb-1">Experience</div>
+                      <div className="text-xl font-bold text-purple-600">{profile.yearsExperience} yrs</div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="text-xs font-medium text-gray-700 mb-2">Top Skills:</div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {skills.slice(0, 3).map((skill, idx) => (
+                        <span key={idx} className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full border border-green-200">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm">
+                    View Full Profile
+                    <Icon name="chevron-right" className="w-4 h-4" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // HR Job Postings Component
+    function HRJobPostings() {
+      const [searchQuery, setSearchQuery] = useState('');
+      
+      const jobPostings = [
+        {
+          id: '1',
+          title: 'Technical Support Engineer',
+          department: 'Customer Success',
+          location: 'Remote',
+          status: 'open',
+          requiredSkills: ['Technical Troubleshooting', 'Customer Communication'],
+          candidateCount: 8,
+          hiringManager: 'David Kim',
+          postedDate: 'Jan 15, 2026',
+          urgency: 'high',
+        },
+        {
+          id: '2',
+          title: 'Senior Frontend Engineer',
+          department: 'Engineering',
+          location: 'San Francisco, CA',
+          status: 'open',
+          requiredSkills: ['React', 'TypeScript', 'System Design'],
+          candidateCount: 5,
+          hiringManager: 'Sarah Chen',
+          postedDate: 'Jan 10, 2026',
+          urgency: 'medium',
+        }
+      ];
+
+      const filteredJobs = jobPostings.filter(job => 
+        job.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      return (
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Open Positions</h2>
+                <p className="text-gray-600">Manage job postings and view matched candidates</p>
+              </div>
+              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                <Icon name="plus" className="w-5 h-5" />
+                New Job Posting
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+            <input
+              type="text"
+              placeholder="Search by title..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="space-y-4">
+            {filteredJobs.map(job => (
+              <div key={job.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="font-bold text-gray-900 text-lg">{job.title}</h3>
+                      {job.urgency === 'high' && (
+                        <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded-full">
+                          Urgent
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                      <div>{job.department}</div>
+                      <div>•</div>
+                      <div>{job.location}</div>
+                      <div>•</div>
+                      <div>Posted {job.postedDate}</div>
+                    </div>
+                    <div className="mb-3">
+                      <div className="text-xs text-gray-600 mb-1">Hiring Manager: {job.hiringManager}</div>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {job.requiredSkills.map((skill, idx) => (
+                          <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-lg border border-green-200 inline-flex">
+                      <Icon name="users" className="w-4 h-4 text-green-600" />
+                      <span className="text-sm font-medium text-green-700">
+                        {job.candidateCount} Matched Candidates
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Simple Profile Page for Applicant View
+    function ProfilePage({ profile }) {
+      const skills = profile.skills || profile.extractedSkills.map(s => s.name);
+      
+      return (
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg border border-gray-200 p-8">
+            <div className="flex items-start gap-6 mb-6">
+              <img
+                src={profile.imageUrl}
+                alt={profile.name}
+                className="w-24 h-24 rounded-full object-cover"
+              />
+              <div className="flex-1">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">{profile.name}</h2>
+                <div className="text-xl text-gray-600 mb-2">{profile.role}</div>
+                <div className="text-gray-500">{profile.department}</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="bg-blue-50 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold text-blue-600">{profile.totalMatches}</div>
+                <div className="text-sm text-gray-600">Job Matches</div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold text-green-600">{skills.length}</div>
+                <div className="text-sm text-gray-600">Skills</div>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold text-purple-600">{profile.yearsExperience}</div>
+                <div className="text-sm text-gray-600">Years Experience</div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3">Skills</h3>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((skill, idx) => (
+                  <span key={idx} className="px-3 py-1.5 bg-green-100 text-green-700 text-sm rounded-full border border-green-200">
+                    ✓ {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Simple Job Match Page
+    function JobMatchPage({ profile }) {
+      if (!profile.jobMatches || profile.jobMatches.length === 0) {
+        return (
+          <div className="text-center py-12">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No job matches yet</h3>
+            <p className="text-gray-600">Check back soon for personalized opportunities</p>
+          </div>
+        );
+      }
+
+      return (
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Job Matches for {profile.name}</h2>
+          <div className="space-y-4">
+            {profile.jobMatches.map((job, idx) => (
+              <div key={idx} className="bg-white rounded-lg border border-gray-200 p-6">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-lg mb-1">{job.title}</h3>
+                    <div className="text-sm text-gray-600">{job.team} • {job.location}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-green-600">{job.matchScore}%</div>
+                    <div className="text-xs text-gray-500">Match</div>
+                  </div>
+                </div>
+                <p className="text-gray-700 mb-4">{job.description}</p>
+                <div className="mb-3">
+                  <div className="text-sm font-medium text-gray-700 mb-2">
+                    Required Skills: {job.requiredSkills.filter(s => !job.skillGaps.includes(s)).length}/{job.requiredSkills.length}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {job.requiredSkills.map((skill, skillIdx) => {
+                      const isGap = job.skillGaps.includes(skill);
+                      return (
+                        <span
+                          key={skillIdx}
+                          className={`px-2 py-1 text-xs rounded-full ${
+                            isGap
+                              ? 'bg-orange-100 text-orange-700 border border-orange-200'
+                              : 'bg-green-100 text-green-700 border border-green-200'
+                          }`}
+                        >
+                          {isGap ? '○' : '✓'} {skill}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="text-sm text-gray-600">
+                  Hiring Manager: {job.hiringManager} • {job.transferType}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Main App Component
+    function App() {
+      const [currentPage, setCurrentPage] = useState('profile');
+      const [selectedProfileId, setSelectedProfileId] = useState('christine-wu');
+      const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+      const [viewMode, setViewMode] = useState('applicant');
+
+      const selectedProfile = profiles.find(p => p.id === selectedProfileId) || profiles[0];
+
+      return (
+        <div className="min-h-screen bg-gray-50">
+          {/* Header */}
+          <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-16">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M4 6 L20 6" />
+                      <path d="M4 18 L20 18" />
+                      <path d="M7 6 L7 18" />
+                      <path d="M12 6 L12 18" />
+                      <path d="M17 6 L17 18" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h1 className="font-bold text-gray-900">InsideTrack</h1>
+                    <p className="text-xs text-gray-500">Your Internal Career Path</p>
+                  </div>
+                </div>
+                
+                <div className="relative">
+                  <button
+                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                    className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100"
+                  >
+                    <img src={selectedProfile.imageUrl} alt={selectedProfile.name} className="w-8 h-8 rounded-full" />
+                    <div className="text-left">
+                      <div className="text-sm font-medium text-gray-900">{selectedProfile.name}</div>
+                      <div className="text-xs text-gray-500">{selectedProfile.role}</div>
+                    </div>
+                    <Icon name="chevron-down" className="w-4 h-4" />
+                  </button>
+
+                  {showProfileDropdown && (
+                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg border py-2">
+                      {profiles.map((profile) => (
+                        <button
+                          key={profile.id}
+                          onClick={() => {
+                            setSelectedProfileId(profile.id);
+                            setShowProfileDropdown(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                        >
+                          <img src={profile.imageUrl} alt={profile.name} className="w-10 h-10 rounded-full" />
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-medium">{profile.name}</div>
+                            <div className="text-xs text-gray-500">{profile.role}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </header>
+
+          {/* Navigation */}
+          <nav className="bg-white border-b border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between">
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => setCurrentPage('profile')}
+                    className={`flex items-center gap-2 px-6 py-4 border-b-2 ${
+                      currentPage === 'profile' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-600'
+                    }`}
+                  >
+                    <Icon name="user" className="w-5 h-5" />
+                    <span className="font-medium">{viewMode === 'hr' ? 'All Applicants' : 'Profile'}</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage('jobs')}
+                    className={`flex items-center gap-2 px-6 py-4 border-b-2 ${
+                      currentPage === 'jobs' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-600'
+                    }`}
+                  >
+                    <Icon name="briefcase" className="w-5 h-5" />
+                    <span className="font-medium">{viewMode === 'hr' ? 'Open Positions' : 'Job Matches'}</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2 mr-4">
+                  <span className="text-sm text-gray-600">View as:</span>
+                  <div className="flex bg-gray-100 rounded-lg p-1">
+                    <button
+                      onClick={() => setViewMode('applicant')}
+                      className={`px-4 py-1.5 rounded-md text-sm font-medium ${
+                        viewMode === 'applicant' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <Icon name="user" className="w-4 h-4" />
+                        Applicant
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => setViewMode('hr')}
+                      className={`px-4 py-1.5 rounded-md text-sm font-medium ${
+                        viewMode === 'hr' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <Icon name="users" className="w-4 h-4" />
+                        HR
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          {/* Main Content */}
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {viewMode === 'applicant' && currentPage === 'profile' && (
+              <ProfilePage profile={selectedProfile} />
+            )}
+            {viewMode === 'applicant' && currentPage === 'jobs' && (
+              <JobMatchPage profile={selectedProfile} />
+            )}
+            {viewMode === 'hr' && currentPage === 'profile' && (
+              <HRDashboard profiles={profiles} onSelectApplicant={(id) => console.log('Selected:', id)} />
+            )}
+            {viewMode === 'hr' && currentPage === 'jobs' && (
+              <HRJobPostings />
+            )}
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-white border-t border-gray-200 mt-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <Icon name="shield" className="w-5 h-5 text-emerald-600" />
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-medium text-gray-900">Privacy & AI Ethics Protected</span>
+                      <span className="px-2 py-0.5 bg-emerald-600 text-white text-xs rounded-full">SOC 2</span>
+                      <span className="px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full">GDPR</span>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      Your career data is encrypted and protected. Our AI recommendations undergo bias detection and fairness audits.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="text-center text-sm text-gray-600">
+                <p className="mb-2">Empowering organizations with skills-first internal mobility</p>
+                <p className="text-xs text-gray-500">© 2026 InsideTrack. Transforming careers, one opportunity at a time.</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // Render the app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
